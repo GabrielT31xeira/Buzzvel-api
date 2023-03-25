@@ -1,0 +1,53 @@
+version: '3'
+services:
+  # Criação do banco de dados
+  db_buzzvel:
+    image: mysql:latest
+    restart: always
+    container_name: dbbuzzvel
+    ports:
+      - "3311:3306"
+    volumes:
+      - db_data:/var/lib/mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: buzzvel_db
+      MYSQL_USER: buzzvel
+      MYSQL_PASSWORD: buzzvel
+    networks:
+      - buzzvel_net
+
+  # Criação do servidor web
+  nginx:
+    image: nginx:latest
+    container_name: nginxbuzzvel
+    ports:
+      - "8083:80"
+    volumes:
+      - ./:/var/www/html
+      - ./nginx/default.conf:/etc/nginx/conf.d/default.conf
+    networks:
+      - buzzvel_net
+
+  # Criação do container Laravel
+  app:
+    volumes:
+      - ./:/var/www/html
+    build:
+      context: .
+      dockerfile: Dockerfile-php
+    container_name: appbuzzvel
+    environment:
+      - "DB_HOST=dbbuzzvel"
+      - "DB_PORT=3306"
+      - "DB_DATABASE=buzzvel_db"
+      - "DB_USERNAME=buzzvel"
+      - "DB_PASSWORD=buzzvel"
+    networks:
+      - buzzvel_net
+
+volumes:
+  db_data:
+
+networks:
+  buzzvel_net:
