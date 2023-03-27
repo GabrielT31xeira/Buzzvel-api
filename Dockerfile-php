@@ -6,9 +6,13 @@ RUN apt-get update && apt-get install -y \
     libzip-dev \
     unzip \
     libpq-dev \
+    libpng-dev \
+    libmagickwand-dev \
     && docker-php-ext-install pdo pdo_mysql zip \
     && docker-php-ext-install gd \
-    && docker-php-ext-enable gd
+    && docker-php-ext-enable gd \
+    && pecl install imagick \
+    && docker-php-ext-enable imagick
 
 # Pasta de trabalho
 WORKDIR /var/www/html
