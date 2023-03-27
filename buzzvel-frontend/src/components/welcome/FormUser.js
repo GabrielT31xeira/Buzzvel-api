@@ -7,12 +7,22 @@ export default function FormUser() {
     const [linkedin, setLinkedin] = useState();
     const [github, setGithub] = useState();
 
+    const [error, setError] = useState('');
     const submitForm = () => {
         axios.post(`http://localhost:8083/api/create/qr`,{
             name,
             linkedin,
             github
-        });
+        }).then(response => response.json)
+            .then(data => {
+                if(data.error){
+                    console.log(data.error)
+                    setError(data.error)
+                }
+                else {
+                    console.log(data)
+                }
+            }).catch(error => setError(error.response.data));
     }
 
     return (
@@ -25,6 +35,7 @@ export default function FormUser() {
                             Name
                         </label>
                         <input class="py-3 pr-1 rounded-r-lg border-gray-500 border" onChange={(e) => setName(e.target.value)}/>
+                        {error && <p class="ml-8 text-red-500 mt-2">{error?.error?.name[0]}</p>}
                     </div>
                 </Form.Field>
 
@@ -34,6 +45,7 @@ export default function FormUser() {
                             LinkedIn URL
                         </label>
                         <input class="py-3 rounded-r-lg border-gray-500 border" onChange={(e) => setLinkedin(e.target.value)}/>
+                        {error?.error?.linkedin && <p class="ml-8 text-red-500 mt-2">{error?.error?.linkedin[0]}</p>}
                     </div>
                 </Form.Field>
 
@@ -43,8 +55,11 @@ export default function FormUser() {
                             Github URL
                         </label>
                         <input class="py-3 pr-1 rounded-r-lg border-gray-500 border" onChange={(e) => setGithub(e.target.value)}/>
+                        {error?.error?.github && <p class="ml-8 text-red-500 mt-2">{error?.error?.github[0]}</p>}
                     </div>
                 </Form.Field>
+                    
+                    {error && <p class="ml-8 text-red-500 mt-2">{error?.message}</p>}
                 <Button
                     onClick={submitForm}
                     type="submit"
