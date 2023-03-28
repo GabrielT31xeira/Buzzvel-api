@@ -32,7 +32,7 @@ class UserController extends Controller
             ]);
 
             $name = $request->name;
-            $base_url = "http://localhost:8083/api/" . $name;
+            $base_url = "http://localhost:3000/" . $name;
 
             //Tranformando a imagem em base 64
             $qrCodeImage = QrCode::format('png')->size(250)->generate($base_url);
@@ -44,18 +44,9 @@ class UserController extends Controller
     }
 
     public function getUserByName(Request $request){
-        // Validando as inforações
-        $validate = Validator::make($request->all(),[
-            'name' => 'required'
-        ]);
-
-        if ($validate->fails()) {
-            return response()->json(['message' => 'Usuario não encontrado', 'error' => $validate->errors()])->setStatusCode(422);
-        }
-
         // Fazendo a busca do usuario
         try {
-            $user = User::where('name', $request->name)->get();
+            $user = User::where('name', $request->name)->latest()->first();
             return response()->json(['user' => $user])->setStatusCode(200);
             // Erro do servidor
         } catch (\Exception $e){
