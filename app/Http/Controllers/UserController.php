@@ -32,7 +32,7 @@ class UserController extends Controller
             ]);
 
             $name = $request->name;
-            $base_url = "http://localhost:3000/" . $name;
+            $base_url = "http://localhost:3001/" . $name;
 
             //Tranformando a imagem em base 64
             $qrCodeImage = QrCode::format('png')->size(250)->generate($base_url);
