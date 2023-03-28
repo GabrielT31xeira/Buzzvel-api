@@ -46,6 +46,17 @@ services:
     networks:
       - buzzvel_net
 
+  # Criação do conteiner do react
+  react-app:
+    build:
+      context: ./buzzvel-frontend
+      dockerfile: Dockerfile
+    ports:
+      - "3001:3000"
+    networks:
+      - buzzvel_net
+
+
 volumes:
   db_data:
 
