@@ -23,9 +23,6 @@ COPY . .
 # Copia o arquivo .env para dentro do container
 COPY .env.example .env
 
-# Gera a chave de aplicação do Laravel
-RUN php artisan key:generate
-
 # Expõe a porta do servidor web
 EXPOSE 9000
 
