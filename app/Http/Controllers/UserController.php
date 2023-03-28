@@ -14,7 +14,7 @@ class UserController extends Controller
     {
         // Validando as inforações
         $validate = Validator::make($request->all(),[
-            'name' => 'unique:users|required',
+            'name' => 'required',
             'linkedin' => 'required',
             'github' => 'required'
         ]);
@@ -25,7 +25,7 @@ class UserController extends Controller
 
         // Fazendo o cadastro do usuario
         try {
-            User::create([
+            $user = User::create([
                 'name' => $request->name,
                 'linkedin' => $request->linkedin,
                 'github' => $request->github
@@ -35,7 +35,7 @@ class UserController extends Controller
             $base_url = "http://localhost:8083/api/" . $name;
 
             //Tranformando a imagem em base 64
-            $qrCodeImage = QrCode::format('png')->size(250)->generate($base_url);
+            $qrCodeImage = QrCode::format('png')->size(250)->generate($base_url, $user->id);
             $base64Image = base64_encode($qrCodeImage);
             return response()->json(['message' => 'Codigo QR criado', 'image' => $base64Image])->setStatusCode(200);
         } catch (Exception $e) {
