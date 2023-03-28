@@ -8,21 +8,28 @@ export default function FormUser() {
     const [github, setGithub] = useState();
 
     const [error, setError] = useState('');
+    const [sucess, setSucess] = useState('');
     const submitForm = () => {
         axios.post(`http://localhost:8083/api/create/qr`,{
             name,
             linkedin,
             github
-        }).then(response => response.json)
-            .then(data => {
-                if(data.error){
-                    console.log(data.error)
-                    setError(data.error)
-                }
-                else {
-                    console.log(data)
-                }
-            }).catch(error => setError(error.response.data));
+        }).then((response) => {
+            if (response.status == 200) {
+                console.log(response);
+                setSucess(response.data)
+                setError("")
+            }
+        }).then(data => {
+            if(data.error){
+                console.log(data.error)
+                setError(data.error)
+                setSucess("")
+            }
+            else {
+                console.log(data)
+            }
+        }).catch(error => setError(error.response.data), setSucess(""));;
     }
 
     return (
@@ -60,6 +67,7 @@ export default function FormUser() {
                 </Form.Field>
                     
                     {error && <p class="ml-8 text-red-500 mt-2">{error?.message}</p>}
+                    {sucess && <p class="ml-8 text-green-500 mt-2">{sucess?.message}</p>}
                 <Button
                     onClick={submitForm}
                     type="submit"
