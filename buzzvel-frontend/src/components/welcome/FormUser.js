@@ -2,13 +2,18 @@ import axios from "axios";
 import { useState } from "react";
 import { Button, Form } from "semantic-ui-react";
 
+// Componente de formulário
 export default function FormUser() {
+    // Variaveis do form
     const [name, setName] = useState();
     const [linkedin, setLinkedin] = useState();
     const [github, setGithub] = useState();
 
+    // Variáveis de retorno para o usuario
     const [error, setError] = useState('');
     const [sucess, setSucess] = useState('');
+
+    // função de envio do formulário
     const submitForm = () => {
         axios.post(`http://localhost:8083/api/create/qr`,{
             name,
@@ -32,10 +37,12 @@ export default function FormUser() {
         }).catch(error => setError(error.response.data), setSucess(""));;
     }
 
+    // Renderização do componente
     return (
         <raiz>
             <h1 class="ml-16 mt-9 text-3xl">QR Code Image Generator</h1>
             <Form>
+                {/* campo de nome */}
                 <Form.Field>
                     <div class="mt-8 ml-4">
                         <label class="px-14 py-4 bg-slate-400 text-slate-800 rounded-l-lg border-gray-500 border">
@@ -46,6 +53,7 @@ export default function FormUser() {
                     </div>
                 </Form.Field>
 
+                {/* Campo do linkedIn */}
                 <Form.Field>
                     <div class="mt-8 ml-4">
                         <label class="mt-8 px-8 py-4 bg-slate-400 text-slate-800 rounded-l-lg border-gray-500 border">
@@ -56,6 +64,7 @@ export default function FormUser() {
                     </div>
                 </Form.Field>
 
+                {/* Campo do Github */}
                 <Form.Field>
                     <div class="mt-8 ml-4">
                         <label class="px-9 py-4 bg-slate-400 text-slate-800 rounded-l-lg border-gray-500 border">
@@ -65,9 +74,10 @@ export default function FormUser() {
                         {error?.error?.github && <p class="ml-8 text-red-500 mt-2">{error?.error?.github[0]}</p>}
                     </div>
                 </Form.Field>
-                    
+                    {/* Retorno de mensagens */}
                     {error && <p class="ml-8 text-red-500 mt-2">{error?.message}</p>}
                     {sucess && <p class="ml-8 text-green-500 mt-2">{sucess?.message}</p>}
+                {/* Botão de envio */}
                 <Button
                     onClick={submitForm}
                     type="submit"
