@@ -8,3 +8,4 @@
 - Dentro do container do laravel rodar para criar o banco de dados `php artisan migrate`.
 - Visite a url `localhost:8083/` parar verificar se o laravel está rodando.
 - Visite a url `localhost:3001/` parar visualizar o frontend.
+- Video youtube https://www.youtube.com/watch?v=fXEh5sWfgZc
