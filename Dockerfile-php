@@ -20,6 +20,9 @@ WORKDIR /var/www/html
 # Copia o código-fonte do Laravel para dentro do container
 COPY . .
 
+# Instala o composer
+RUN curl -sS https://getcomposer.org/installer | /usr/local/bin/php -- --install-dir=/usr/local/bin --filename=composer
+
 # Copia o arquivo .env para dentro do container
 COPY .env.example .env
 
